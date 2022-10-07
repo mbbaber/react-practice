@@ -11,6 +11,15 @@ class Practice extends Component {
             count: this.state.count + 1,
         })
     }
+
+    componentDidMount() {
+        document.title =  `clicked ${this.state.count} times`
+    }
+
+    componentDidUpdate() {
+        document.title =  `clicked ${this.state.count} times`
+    }
+
     render() {
         return (
             <div>
