@@ -5,16 +5,17 @@ const News = () => {
     const [news, setNews] = useState([]);
     const [searchQuery, setSearchQuery] = useState('react');
     const [url, setUrl] = useState('http://hn.algolia.com/api/v1/search?query=react')
+    const [loading, setLoading] = useState(false);
 
 
     //method to fetch news from hackernews api
+ 
     const fetchNews = () => {
-        fetch(`http://hn.algolia.com/api/v1/search?query=${searchQuery}`)
+        setLoading(true)
+        fetch(url)
         .then(result => result.json())
-        .then(data => setNews(data.hits))
-        .catch(err => {
-            console.log(err);
-        })
+        .then(data => setNews(data.hits), setLoading(false))
+        .catch(err => console.log(err));
     };
 
     useEffect(() => { //will run when component mounts and any time there is a change in the state.
@@ -27,12 +28,13 @@ const News = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setUrl(`http://hn.algolia.com/api/v1/search?query=${searchQuery}}`)
+        setUrl(`http://hn.algolia.com/api/v1/search?query=${searchQuery}`)
     }
 
     return(
         <div>
             <h2>News</h2>
+            {loading ? <h2>Loading...</h2> : ""}
             <form onSubmit={handleSubmit}>
                 <input type="text" value={searchQuery} onChange={handleChange}></input>
                 <button>Search</button>
